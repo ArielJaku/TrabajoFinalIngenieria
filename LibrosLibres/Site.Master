@@ -1,0 +1,155 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="TRABAJO1.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %>- BDC</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <style type="text/css">
+        .auto-style1 {
+            width: 1170px;
+            height: 41px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+            .modalDialog {
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        }
+    .modalDialog > div {
+        width: 600px;
+        position: relative;
+        margin: 10% auto;
+        margin-left:20%;
+        padding: 5px 20px 13px 20px;
+        border-radius: 10px;
+        background: #ffffff;
+       /* background: -moz-linear-gradient(#fff, #999);
+        background: -webkit-linear-gradient(#fff, #999);
+        background: -o-linear-gradient(#fff, #999);*/
+        }
+    .close {
+        background: #606061;
+        color: #FFFFFF;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+        }
+    .close:hover { background: #00d9ff; }
+    </style>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+        <div class="navbar navbar-default navbar-fixed-top" style="left: 1px; right: -1px; top: 0 ; background-color:#F7F6F3">
+            <div class="auto-style1">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar">                    
+                        
+                        </span>
+                    </button>
+                    <a class="navbar-brand" runat="server" href="~/">LibrosLibres</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" href="~/">Home</a></li>
+                        <li><a runat="server" href="~/BuscarEjemplares" id="ejemplares">Libros</a></li>
+                        <li><a runat="server" href="~/About" id="nosotros">Nosotros</a></li>
+                        <li><a runat="server" href="~/Contact" id="contacto">Contacto</a></li>
+                        <li><a runat="server" href="~/CargaEjemplar" id="Cargar">Cargar</a></li>
+                        <li><a runat="server" href="~/PerfilMostar" id="Perfil">Perfil</a></li>
+                        <li><a runat="server" href="~/Administrador" id="Administracion">Administracion General</a></li>
+                        <li><a runat="server" href="~/Reportes" id="reportes">Reportes</a></li>
+                        <li><img src="/Imagen/Logo.jpg" style="width: 26px; padding-top : 15px"></li>
+                        <li><asp:Button ID="btnSesion" class="btn btn-link" style="padding-top: 14.5px" runat="server" Text="Iniciar Sesion" OnClick="btnOpenModal_Click" /></li>
+                        <!--<li><a runat="server" href="~/IniciarSesion" id="iniciar">Iniciar Sesion</a></li>-->
+                        <li><a runat="server" href="~/Registrarse" id="registrar">Registrarse</a></li>
+                        <li><a runat="server" href="~/CerrarSesion" id="cerrar">Cerrar</a></li>
+                        </ul>                        
+                        <br />
+                        <div id="divModal" runat="server" class ="modalDialog" visible="false">
+                             <div>
+                             <asp:LinkButton ID="lbtnModalClose" runat="server"  CssClass="close" Text="X" OnClick="CloseModal" />
+                             <h4 style="text-align:center">Iniciar Sesion</h4>
+                             DNI:
+                             <asp:TextBox ID="txtDni" class="form-control" runat="server"></asp:TextBox>                             
+                             <br />
+                             <p>Contraseña:<asp:TextBox ID="txtContraseña" class="form-control" runat="server" TextMode="Password"></asp:TextBox></p>
+                             <br />
+                             <a href="IniciarSesion.aspx">Olvido su contraseña?</a>
+                             <br />
+                             <asp:Button class="btn btn-primary" ID="btnIniciar" runat="server" Text="Entrar" OnClick="btnIniciar_Click"/>
+                             <asp:Button class="btn btn-primary" ID="btnClose" runat="server" Text="Cancelar" OnClick="CloseModal" />
+                            </div>
+                        </div>
+
+                        <!--<li><a runat="server" href="~/"><asp:Label ID="lblU" runat="server" Text="lblU"></asp:Label></a></li>-->
+                        
+                        
+                    
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <hr />
+            <footer>
+                <p>&copy; <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>-Ariel Jakubowski</p>
+            </footer>
+        </div>
+
+    </form>
+</body>
+</html>
